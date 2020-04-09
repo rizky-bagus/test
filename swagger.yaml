@@ -1,0 +1,935 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: "G-point"
+  description: G-points API documentation.
+
+host: pegadaian.gits.app
+basePath: /api/v1
+schemes:
+- https
+tags:
+
+######### Start Authentication  #########
+- name: Authentication
+  description: User Authentication processes
+######### End Authentication  ######### 
+
+- name: Verify - Token
+  description: User Verify token for processes web view
+  
+- name: Catalog - Voucher
+  description: User Get Voucher Catalog in webView
+  
+- name: History - Point
+  description: User Verify token for processes web view
+  
+- name: Transaction
+  description: User Can Transaction For get point
+  
+######### Start Master Data  #########
+# - name: Master User
+#   description: List Data Users Admin
+# - name: Master Products
+#   description: List Data Master Products
+# - name: Master Channels
+#   description: List Data Channels
+# - name: Master Transaction Types
+#   description: List Data Transaction Types
+# - name: Master Payment Methods
+#   description: List Data Payment Methods
+# - name: Master Benefit Types
+#   description: List Data Benefit Types
+# - name: Master Budget Lines
+#   description: List Data Budget Lines
+  ######### End Master Data  ######### 
+
+  
+paths:
+
+  /auth/login:
+    post:
+      tags:
+      - "Authentication"
+      summary: "User Login"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Login Request"
+        description: "Login Requests"
+        required: true
+        schema:
+          $ref: "#/definitions/request-auth-login"
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              data:
+                type: object
+                properties:
+                  token:
+                    $ref: '#/definitions/Token'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              data: 
+                token: 
+                  $ref: '#/definitions/Token/example/basic/token'
+  /verify-token:
+    get:
+      tags:
+      - "Verify - Token"
+      summary: "verify token"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - $ref: '#/parameters/header-token'
+        - $ref: '#/parameters/cif-number'
+        
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              data:
+                type: object
+                properties:
+                  token:
+                    $ref: '#/definitions/Verify'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                  $ref: '#/definitions/Verify/example/basic'                  
+  /catalogs/vouchers:
+    get:
+      tags:
+      - "Catalog - Voucher"
+      summary: "Get All Catalog Vouchers"
+      description: "Get All Catalog Vouchers"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - $ref: '#/parameters/header-Authorization'
+        - $ref: '#/parameters/header-Accept'
+        
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              result:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/definitions/GetAllCatalog'
+            
+                    
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                  $ref: '#/definitions/GetAllCatalog/example'
+  /catalogs/vouchers/{catalogId}:
+    get:
+      tags:
+      - "Catalog - Voucher"
+      summary: "Get By ID Catalog Vouchers"
+      description: "Get By ID Catalog Vouchers"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - $ref: '#/parameters/header-Authorization'
+        - $ref: '#/parameters/header-Accept'
+        - $ref: '#/parameters/path-catalog-id'
+        
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              result:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/definitions/GetIDCatalog'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                  $ref: '#/definitions/GetIDCatalog/example/detail'                                                  
+  /catalogs/vouchers/{catalogId}/exchange:
+    post:
+      tags:
+      - "Catalog - Voucher"
+      summary: "Exchange Catalog Voucher"
+      description: "Exchange Catalog Voucher"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/header-Authorization'
+      - $ref: '#/parameters/header-Accept'
+      - $ref: '#/parameters/path-catalog-id'
+      - in: "body"
+        name: "Exchange Request"
+        description: "Exchange Requests"
+        required: true
+        schema:
+          $ref: "#/definitions/request-exchange-catalog"
+        
+        
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              result:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/definitions/Exchange'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                # token: 
+                  $ref: '#/definitions/Exchange/example/basic'
+  /history-point:
+    get:
+      tags:
+      - "History - Point"
+      summary: "history point"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - $ref: '#/parameters/header-Authorization'
+        - $ref: '#/parameters/cif-number'
+        
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              result:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/definitions/Historypoint'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                  $ref: '#/definitions/Historypoint/example' 
+  /transactions:
+    post:
+      tags:
+      - "Transaction"
+      summary: "Checkout - Transaction"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/header-Authorization'
+      - $ref: '#/parameters/header-Accept'
+      - in: "body"
+        name: "Checkout Transaction Request"
+        description: "Checkout Transaction Request"
+        required: true
+        schema:
+          $ref: "#/definitions/request-checkout-transaction"
+      responses:
+        200:
+          description: 'success response'
+          schema:
+            type: object
+            properties:
+              success:
+                $ref: '#/definitions/common-response-success-success'
+              code:
+                $ref: '#/definitions/common-response-code-success'
+              message:
+                $ref: '#/definitions/common-response-message-success'
+              data:
+                $ref: '#/definitions/Checkout-Transaction'
+          examples:
+            application/json:
+              success: true
+              code: 200
+              message: "Success"
+              result: 
+                  $ref: '#/definitions/Checkout-Transaction/example/detail'                
+                  
+definitions:
+  request-auth-login:
+    title: Login Request
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - password
+    example:
+      email: "admin@gmail.com"
+      password: "12345678"
+  Token:
+    title: Token
+    type: object
+    properties:
+      token:
+        type: string
+      expires_in:
+        type: integer
+    example:
+      basic:
+        token: HASHHASH
+        expires_in: 10000
+  Verify:
+    title: Verify
+    type: object
+    properties:
+      cif_nymber:
+        type: integer
+      total_point:
+        type: integer
+    example:
+      basic:
+        cif_nymber: 1015205749
+        total_point: 10000
+  GetAllCatalog:
+    title: Get All Catalog
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      product_id:
+        type: integer
+      channel_id:
+        type: integer
+      transaction_type_id:
+        type: integer
+      budget_line_id:
+        type: integer
+      validity_period_type:
+        type: string
+      validity_period_value:
+        type: integer
+      multiply_transaction:
+        type: integer
+      multiply_transaction_type:
+        type: string
+      minimal_transaction:
+        type: integer
+      minimal_transaction_type:
+        type: string
+      show_start_date:
+        type: string
+      show_end_date:
+        type: string
+      start_date:
+        type: string
+      end_date:
+        type: string
+      tnc:
+        type: string
+      info:
+        type: string
+      nominal:
+        type: integer
+      maks_transaction:
+        type: integer
+      value_point:
+        type: integer
+      benefit_type_id:
+        type: integer
+      quota:
+        type: integer
+      the_rest:
+        type: integer
+      status:
+        type: string
+      created_by:
+        type: integer
+      created_by_name:
+        type: string
+      updated_by:
+        type: integer
+      updated_by_name:
+        type: string
+      deleted_at:
+        type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+      
+    example:
+      data:
+      - id: 1
+        banner: "noimage.png"
+        name: "Diskon Beli Emas Hingga Rp. 300.000"
+        product_id: 1
+        channel_id: 1
+        transaction_type_id: 1
+        budget_line_id: 1
+        validity_period_type: "Kadaluarsa"
+        validity_period_value: 30
+        multiply_transaction: 2000000
+        multiply_transaction_type: "NOMINAL"
+        minimal_transaction: 2000000
+        minimal_transaction_type: "NOMINAL"
+        show_start_date: "2020-04-07"
+        show_end_date: "2020-05-07"
+        start_date: null
+        end_date: null
+        tnc: null
+        info: "PERCENT"
+        nominal: 20
+        maks_transaction: 100
+        value_point: 100
+        benefit_type_id: 1
+        quota: 50
+        the_rest: 50
+        status: 1
+        created_by: 1
+        created_by_name: null
+        updated_by: null
+        updated_by_name: null
+        deleted_at: null
+        created_at: "2020-04-07 18:06:40"
+        updated_at: null
+
+      - id: 5
+        banner: "noimage.png"
+        name: "Diskon Voucher 5"
+        product_id: 5
+        channel_id: 5
+        transaction_type_id: 3
+        budget_line_id: 1
+        validity_period_type: "Kadaluarsa"
+        validity_period_value: 30
+        multiply_transaction: 150000
+        multiply_transaction_type: "NOMINAL"
+        minimal_transaction: 150000
+        minimal_transaction_type: "NOMINAL"
+        show_start_date: "2020-04-07"
+        show_end_date: "2020-05-07"
+        start_date: null
+        end_date: null
+        tnc: null
+        info: PERCENT
+        nominal: 10
+        maks_transaction: 140000
+        value_point: 100
+        benefit_type_id: 1
+        quota: 50
+        the_rest: 49
+        status: 1
+        created_by: 1
+        created_by_name: null
+        updated_by: null
+        updated_by_name: null
+        deleted_at: null
+        created_at: "2020-04-07 18: 06: 41"
+        updated_at: null
+      first_page_url : 
+          https://pegadaian.gits.app/api/v1/catalogs/vouchers?page=1  
+      from: 1
+      last_page: 1
+      last_page_url: https://pegadaian.gits.app/api/v1/catalogs/vouchers?page=1
+      next_page: null
+      next_page_url: null
+      per_page: 10
+      prev_page_url: null
+      to: 2,
+      total: 2
+  GetIDCatalog:
+    title: Get ID Catalog
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      product_id:
+        type: integer
+      channel_id:
+        type: integer
+      transaction_type_id:
+        type: integer
+      budget_line_id:
+        type: integer
+      validity_period_type:
+        type: string
+      validity_period_value:
+        type: integer
+      multiply_transaction:
+        type: integer
+      multiply_transaction_type:
+        type: string
+      minimal_transaction:
+        type: integer
+      minimal_transaction_type:
+        type: string
+      show_start_date:
+        type: string
+      show_end_date:
+        type: string
+      start_date:
+        type: string
+      end_date:
+        type: string
+      tnc:
+        type: string
+      info:
+        type: string
+      nominal:
+        type: integer
+      maks_transaction:
+        type: integer
+      value_point:
+        type: integer
+      benefit_type_id:
+        type: integer
+      quota:
+        type: integer
+      the_rest:
+        type: integer
+      status:
+        type: string
+      created_by:
+        type: integer
+      created_by_name:
+        type: string
+      updated_by:
+        type: integer
+      updated_by_name:
+        type: string
+      deleted_at:
+        type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+      
+    example:
+      detail:
+        id: 1
+        banner: "noimage.png"
+        name: "Diskon Beli Emas Hingga Rp. 300.000"
+        product_id: 1
+        channel_id: 1
+        transaction_type_id: 1
+        budget_line_id: 1
+        validity_period_type: "Kadaluarsa"
+        validity_period_value: 30
+        multiply_transaction: 2000000
+        multiply_transaction_type: "NOMINAL"
+        minimal_transaction: 2000000
+        minimal_transaction_type: "NOMINAL"
+        show_start_date: "2020-04-07"
+        show_end_date: "2020-05-07"
+        start_date: null
+        end_date: null
+        tnc: null
+        info: "PERCENT"
+        nominal: 20
+        maks_transaction: 100
+        value_point: 100
+        benefit_type_id: 1
+        quota: 50
+        the_rest: 50
+        status: 1
+        created_by: 1
+        created_by_name: null
+        updated_by: null
+        updated_by_name: null
+        deleted_at: null
+        created_at: "2020-04-07 18:06:40"
+        updated_at: null    
+  request-exchange-catalog:
+    title: Exchange Catalogs Request
+    type: object
+    properties:
+      cif_number:
+        type: integer
+    required:
+      - cif_number
+    example:
+      cif_number: "1003002713"
+  Exchange:
+    title: Exchange
+    type: object
+    properties:
+      name:
+        type: string
+      id_jurnal:
+        type: integer
+      catalog_id:
+        type: integer
+      cif_number:
+        type: integer
+      point:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer  
+    example:
+      basic:
+        name: "Penukaran Voucher Diskon Voucher 2"
+        id_jurnal: 86626439481931071936597
+        catalog_id: 3
+        cif_number: 1003002713
+        point: 200
+        status: "Pending"
+        type: "Exchange-Voucher"
+        updated_at: "2020-04-07 23:29:55"
+        created_at: "2020-04-07 23:29:55"
+        id: 31    
+  Historypoint:
+    title: History-point
+    type: object
+    properties:
+      id:
+        type: integer
+      id_jurnal:
+        type: integer
+      name:
+        type: string
+      point:
+        type: integer
+      status:
+        type: string
+      cif_number:
+        type: integer
+      catalog_id:
+        type: string
+      type:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    example:
+      current_page: 1
+      data:
+        month: "April"
+        year: 2020
+        month_number: 4
+        history_data: 
+            - id: 30
+              id_jurnal: 06141395472827580185921
+              name: "Transaksi Rahn"
+              point: 50
+              status: "Berhasil"
+              cif_number: 1015205749
+              catalog_id: null
+              type: "Get-Point"
+              created_at: "2020-04-07 18:22:29"
+              updated_at: "2020-04-07 18:22:29"
+            - id: 29
+              id_jurnal: 22845783266915793410899
+              name: "Transaksi Rahn"
+              point: 50
+              status: "Berhasil"
+              cif_number: 1015205749
+              catalog_id: null
+              type: "Get-Point"
+              created_at: "2020-04-07 18:22:15"
+              updated_at: "2020-04-07 18:22:15"
+      first_page_url: https://pegadaian.gits.app/api/v1/history-point?cif_number=1015205749&page=1,
+      from: 1,
+      last_page: 2,
+      last_page_url: https://pegadaian.gits.app/api/v1/history-point?cif_number=1015205749&page=2,
+      next_page_url: https://pegadaian.gits.app/api/v1/history-point?cif_number=1015205749&page=2,
+      path: https://pegadaian.gits.app/api/v1/history-point,
+      per_page: 2,
+      prev_page_url: null,
+      to: 2,
+      total: 2  
+  request-checkout-transaction:
+    title: Checkout Transaction Request
+    type: object
+    properties:
+      cif_poin:
+        type: integer
+      cif_rekening:
+        type: string
+      no_rekening:
+        type: integer
+      sub_produk:
+        type: integer
+      bank_id:
+        type: integer
+      jenis_transaksi:
+        type: string
+      channel_name:
+        type: string
+      channel_id:
+        type: integer
+      payment_method:
+        type: string
+      amount_payment:
+        type: integer
+      gram:
+        type: string
+      uang_pinjaman:
+        type: integer
+      kode_promo:
+        type: string
+      benefit:
+        type: string
+      amount_benefit:
+        type: integer
+    required:
+      - cif_poin 
+      - cif_rekening 
+      - no_rekening 
+      - sub_produk 
+      - bank_id 
+      - jenis_transaksi 
+      - channel_name 
+      - channel_id 
+      - payment_method 
+      - amount_payment 
+      - gram 
+      - uang_pinjaman 
+      - kode_promo 
+      - amount_benefit
+    example:
+      cif_poin: 1015205749
+      cif_rekening: "A778"
+      no_rekening: 12313
+      sub_produk: 02
+      bank_id: 002
+      jenis_transaksi: "UG"
+      channel_name: "TELLER"
+      channel_id: 6010
+      payment_method: "WALLET"
+      example:
+      email: "admin@gmail.com"
+      password: "12345678"
+      uang_pinjaman: 10000
+      kode_promo: KP0091
+      benefit: "-"
+      amount_benefit: 0    
+  Checkout-Transaction:
+    title: Checkout Transaction
+    type: object
+    properties:
+      id:
+        type: integer
+      id_jurnal:
+        type: integer
+      cif_poin:
+        type: integer
+      cif_rekening:
+        type: string
+      no_rekening:
+        type: integer
+      sub_produk:
+        type: integer
+      bank_id:
+        type: integer
+      jenis_transaksi:
+        type: string
+      channel_name:
+        type: string
+      channel_id:
+        type: integer
+      payment_method:
+        type: string
+      reguler_id:
+        type: integer
+      point_reguler:
+        type: integer
+      khusus_id:
+        type: integer
+      reward:
+        type: integer  
+      point_khusus:
+        type: integer  
+      amount_payment:
+        type: integer
+      gram:
+        type: string
+      uang_pinjaman:
+        type: integer
+      kode_promo:
+        type: string
+      benefit:
+        type: string
+      amount_benefit:
+        type: integer
+      createdAt:
+        type: string
+      updatedAt:
+        type: string  
+      
+    example:
+      detail:
+        id: 1
+        tgl_transaksi: "2020-04-08 21:53:23"
+        id_jurnal: 30668081771852148227273
+        cif_poin: 1015205749
+        cif_rekening: "A778"
+        no_rekening: 12313
+        amount_payment: 100000
+        gram: 12
+        uang_pinjaman: 10000
+        kode_promo: "KP0091"
+        benefit: "-"
+        amount_benefit: 0
+        bank_id: 002
+        sub_produk: 02
+        jenis_transaksi: "UG"
+        channel_id: 6010
+        channel_name: "TELLER"
+        payment_method: "WALLET"
+        reguler_id: 1
+        point_reguler: 50
+        khusus_id: 0
+        point_khusus: 0
+        reward: 50
+        updated_at: "2020-04-08 21:53:23"
+        created_at: "2020-04-08 21:53:23"
+        
+
+          
+        
+  common-response-success-success:
+    title: Success indicator
+    type: boolean
+    enum: [true]
+  common-response-code-success:
+    title: Response error code
+    type: integer
+    enum: [200]
+  common-response-error-success:
+    title: Success error code
+    type: integer
+    enum: [0, 9000]
+  common-response-message-success:
+    title: Success message
+    type: string
+    enum: ["Success", "Failed"]
+    
+parameters:
+  header-token:
+    name: token
+    in: query
+    required: true
+    default: cGVnYWRhaWFuZ3BvaW50OnBlZ2FkYWlhbnI0aDQxNWE=
+    type: string
+    description: Access token to access restricted resource.
+  cif-number:
+    name: cif_number
+    in: query
+    required: true
+    type: string
+    description: Access cif_number to access webview.
+  header-Authorization:
+    name: Authorization
+    in: header
+    required: true
+    default: cGVnYWRhaWFuZ3BvaW50OnBlZ2FkYWlhbnI0aDQxNWE=
+    type: string
+    description: Access token to access restricted resource.
+  header-Accept:
+    name: Accept
+    in: header
+    default: application/json
+    required: true
+    type: string
+    # description: Access token to access restricted resource..
+  path-catalog-id:
+    name: catalogId
+    in: path
+    description: ID of Catalogs to fetch
+    required: true
+    type: integer
+    format: int64
